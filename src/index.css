@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+
+  body {
+    @apply bg-surface-1 text-ink;
+  }
+
+  /* Fokus keyboard terlihat jelas — DESIGN.md §9 Aksesibilitas */
+  :focus-visible {
+    outline: 2px solid theme('colors.primary');
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: theme('colors.primary');
+    color: theme('colors.on-primary');
+  }
+}
+
+@layer utilities {
+  .min-touch {
+    min-height: 48px;
+  }
+}
