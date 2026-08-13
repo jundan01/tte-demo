@@ -12,55 +12,20 @@ Produksi" di bawah untuk penyesuaian yang disengaja.
 
 ---
 
-## 1. Setup Supabase (sekali saja)
+## 1. Setup — Sudah Otomatis di Bolt
 
-1. Buat project baru di [supabase.com](https://supabase.com) (tier gratis cukup).
-2. Buka **SQL Editor** di dashboard Supabase, tempel seluruh isi
-   `supabase/schema.sql`, lalu jalankan (**Run**). Ini akan membuat semua tabel,
-   RLS policy, dan fungsi bisnis sekaligus mengisi data SKPD contoh.
-3. **Ganti kunci enkripsi demo.** Di SQL Editor, jalankan:
-   ```sql
-   update app_secrets
-   set key_value = 'ganti-dengan-string-acak-panjang-milik-anda-sendiri'
-   where key_name = 'encryption_key';
-   ```
-   Kunci ini setara peran `APP_KEY` di Laravel — dipakai untuk mengenkripsi
-   NIK/NIP. **Jangan pernah dibagikan atau dipakai ulang di project lain.**
-4. Pastikan MFA (TOTP) aktif di project Anda: **Authentication → Providers →
-   Multi-Factor Authentication** biasanya sudah aktif secara default di
-   Supabase; tidak perlu dikonfigurasi tambahan.
-5. **Nonaktifkan signup publik** (penting — mencegah siapa pun membuat akun
-   Superadmin sendiri): **Authentication → Providers → Email → matikan "Allow
-   new users to sign up"**.
+Project ini sudah terhubung ke database Supabase yang aktif. Skema database
+(tabel, RLS, fungsi bisnis, data SKPD contoh) sudah diterapkan. File `.env`
+sudah berisi kredensial yang benar.
 
-## 2. Buat akun Superadmin pertama
+Akun Superadmin demo sudah dibuat:
+- **Email:** `admin@cirebonkota.go.id`
+- **Password:** `CirebonTTE2026!`
 
-Karena signup publik dimatikan (lihat di atas) dan aplikasi ini sengaja tidak
-menyediakan formulir "Daftar Admin" (lihat catatan keamanan di halaman
-Manajemen Akun), buat akun pertama lewat dashboard:
+Login pertama kali akan mengarahkan ke halaman **Aktivasi MFA** (wajib —
+SECURITY.md §6.2) sebelum bisa mengakses Panel Superadmin.
 
-1. **Authentication → Users → Add User** (pilih "Create new user").
-2. Isi email & password, centang **Auto Confirm User**.
-3. Login pertama kali di aplikasi akan otomatis mengarahkan ke halaman
-   **Aktivasi MFA** (wajib, tidak bisa dilewati — SECURITY.md §6.2) sebelum
-   bisa mengakses Panel Superadmin.
-
-Untuk akun kedua dst., ulangi langkah yang sama dari dashboard — bukan dari
-aplikasi (lihat halaman **Manajemen Akun** di dalam aplikasi untuk
-penjelasannya).
-
-## 3. Konfigurasi environment
-
-```bash
-cp .env.example .env
-```
-
-Isi `VITE_SUPABASE_URL` dan `VITE_SUPABASE_ANON_KEY` dari **Project Settings →
-API** di dashboard Supabase Anda. Kunci `anon` aman ditaruh di frontend —
-akses sesungguhnya dikontrol oleh RLS & fungsi `SECURITY DEFINER` di
-`schema.sql`, bukan oleh kerahasiaan kunci ini.
-
-## 4. Jalankan secara lokal
+## 2. Jalankan secara lokal
 
 ```bash
 npm install
